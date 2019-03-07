@@ -3,7 +3,7 @@
 * 安装根据想要的操作系统只要解压压缩包即可
 * 配置数据源
 
-  <img src="https://github.com/ZXBmmt/blog/raw/master/resources/spring-actuator/grafana_config_datasource.png" width="35%" height="35%"></img>
+  <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/grafana_config_datasource.png" width="35%" height="35%"></img>
 * 配置开启邮件报警
 ```
 ##编辑 {data}/grafana/conf
