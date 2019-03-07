@@ -3,8 +3,30 @@
 * 安装根据想要的操作系统只要解压压缩包即可
 * 配置数据源
 
-<img src="https://github.com/ZXBmmt/bolg/raw/master/resource/grafana_config_datasource.png" width="35%" height="35%"></img>
+  <img src="https://github.com/ZXBmmt/blog/raw/master/resources/spring-actuator/grafana_config_datasource.png" width="35%" height="35%"></img>
+* 配置开启邮件报警
+```
+##编辑 {data}/grafana/conf
+#################################### SMTP / Emailing #####################
+[smtp]
+enabled = true
+host = smtp.139.com:25
+user = xxx@139.com
+# If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
+password = xxxx
+cert_file =
+key_file =
+skip_verify = true
+from_address = xxx@139.com
+from_name = Grafana
+ehlo_identity =
+[alerting]
+# Makes it possible to turn off alert rule execution.
+execute_alerts = true
+```
+* 配置发送邮件邮箱
 
+  <img src="https://github.com/ZXBmmt/blog/raw/master/resources/spring-actuator/config_email.png" width="35%" height="35%"></img>
 
 ## 为grafana安装数据源graphite
 * 安装教程见:安装过程请参考[陌生人——蓝精灵:《graphite安装（一键搞定版）》](https://blog.csdn.net/liuxiao723846/article/details/82735147)
@@ -102,7 +124,7 @@ sock.close()
 xbZhangdeMacBook-Pro:scripts zxb$ curl http://127.0.0.1:8080/helloWorld
 xbZhangdeMacBook-Pro:scripts zxb$ python3 metric-to-carbon.py
 ```
-<img src="https://github.com/ZXBmmt/bolg/raw/master/resource/test_collect_metrics.png" width="35%" height="35%"></img>
+<img src="https://github.com/ZXBmmt/blog/raw/master/resources/spring-actuator/test_collect_metrics.png" width="50%" height="50%"></img>
 
 ## 监控脚本定时执行
 * linux操作系统
