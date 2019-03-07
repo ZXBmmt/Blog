@@ -124,7 +124,7 @@ sock.close()
 xbZhangdeMacBook-Pro:scripts zxb$ curl http://127.0.0.1:8080/helloWorld
 xbZhangdeMacBook-Pro:scripts zxb$ python3 metric-to-carbon.py
 ```
-<img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/test_collect_metrics.png" width="50%" height="50%"></img>
+<img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/test_collect_metrics.png" width="80%" height="80%"></img>
 
 ## 监控脚本定时执行
 * linux操作系统
