@@ -134,3 +134,13 @@ crontab -e //编辑定时任务列表
 #每分钟执行
 */1 * * * * /usr/local/bin/python3 /data/spring-actuator/scripts/metrics-to-carbon.py >> /data/spring-actuator/sys.log
 ```
+
+## grafana展示数据设置报警
+
+* 配置查询面板
+  <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_grafana_panel.png" width="80%" height="80%"></img>
+
+  <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_alter.png" width="80%" height="80%"></img>
+* 报警效果
+  小贴士:139邮箱可以开启短息通知
+    <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_alter.png" width="80%" height="80%"></img>
