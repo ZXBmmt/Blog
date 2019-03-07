@@ -26,7 +26,7 @@ execute_alerts = true
 ```
 * 配置发送邮件邮箱
 
-  <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_email.png" width="35%" height="35%"></img>
+  <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_email.png" width="50%" height="50%"></img>
 
 ## 为grafana安装数据源graphite
 * 安装教程见:安装过程请参考[陌生人——蓝精灵:《graphite安装（一键搞定版）》](https://blog.csdn.net/liuxiao723846/article/details/82735147)
