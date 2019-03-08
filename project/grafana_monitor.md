@@ -1,12 +1,15 @@
+## 概述
+使用springboot快速开发一个web项目示例，添加spring-actuator做服务运行指标统计，使用graphite集为数据存储，grafana做监控数据展示和设置报警，利用linux系统定时任务crontab定时执行python脚本读取服务统计指标放入graphite
+
 ## grafana安装
 * [下载地址](https://grafana.com/grafana/download)
-* 安装根据想要的操作系统只要解压压缩包即可
+* 根据操作系统选择下载 安装只需解压压缩包即可
 * 配置数据源
 
   <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/grafana_config_datasource.png" width="35%" height="35%"></img>
 * 配置开启邮件报警
 ```
-##编辑 {data}/grafana/conf
+##编辑vi {data}/grafana/conf/defaults.ini
 #################################### SMTP / Emailing #####################
 [smtp]
 enabled = true
@@ -29,7 +32,7 @@ execute_alerts = true
   <img src="https://github.com/ZXBmmt/blog/blob/master/resources/spring-actuator/config_email.png" width="80%" height="80%"></img>
 
 ## 为grafana安装数据源graphite
-* 安装教程见:安装过程请参考[陌生人——蓝精灵:《graphite安装（一键搞定版）》](https://blog.csdn.net/liuxiao723846/article/details/82735147)
+* 安装过程请参考[陌生人——蓝精灵:《graphite安装（一键搞定版）》](https://blog.csdn.net/liuxiao723846/article/details/82735147)
 
 ## 使用spring-actuator
 * [源代码](https://github.com/ZXBmmt/spring-actuator)
