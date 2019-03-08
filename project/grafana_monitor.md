@@ -112,11 +112,11 @@ for server in serverList:
     hellWorldCallSuccessCount = readMetricTodayCount(hellWorldCallCountMetricsReqUrl,todayHuman)
     print(hellWorldCallCountMetricsReqUrl)
     print(hellWorldCallSuccessCount)
-    graphiteKeyPullOpmTaskRunSuccessCountToday = carbon_db + "helloworld.success.count." + graphiteServerMetricsUrl + ".today"
-    graphiteKeyPullOpmTaskRunSuccessCountDay = carbon_db + "helloworld.success.count." + graphiteServerMetricsUrl + "." + todayHuman
+    hellWorldCallSuccessCountToday = carbon_db + "helloworld.success.count." + graphiteServerMetricsUrl + ".today"
+    hellWorldCallSuccessCountDay = carbon_db + "helloworld.success.count." + graphiteServerMetricsUrl + "." + todayHuman
     ts = int(round(time.time()))
-    metrics_ary.append('%s %s %d' % (graphiteKeyPullOpmTaskRunSuccessCountToday, hellWorldCallSuccessCount, ts))
-    metrics_ary.append('%s %s %d' % (graphiteKeyPullOpmTaskRunSuccessCountDay, hellWorldCallSuccessCount, ts))
+    metrics_ary.append('%s %s %d' % (hellWorldCallSuccessCountToday, hellWorldCallSuccessCount, ts))
+    metrics_ary.append('%s %s %d' % (hellWorldCallSuccessCountDay, hellWorldCallSuccessCount, ts))
 msg = '\n'.join(metrics_ary) + '\n'
 #print(msg)
 sock.sendall(msg.encode())
