@@ -237,7 +237,7 @@ public class SpringbootRedisClusterSample {
 }
 ```
 
-### 故障处理
+### 集群运维
 #### 集群重新分片
 
   ```bash
@@ -246,7 +246,11 @@ public class SpringbootRedisClusterSample {
 
   How many slots do you want to move (from 1 to 16384)? 100
 
+  What is the receiving node ID? aca0f8429f137ef379ff152bb9cf220c13cd1527 #目标节点id
+
   Source node #1:all
+  # 上面的all表示除目标节点 从其余所有节点中分摊相应槽迁移至目标节点
+  # 也可以只指定某个节点id为被迁移节点
 
   ```
   ``` bash
@@ -267,8 +271,50 @@ public class SpringbootRedisClusterSample {
   ```
   * 问题:我的测试redis版本是4.0.2 所以在使用ruby gem安装的redis库，版本不能使用最新的4以上版本，否则redis-trib.rb reshard 192.168.2.106:8002 重新分片时会报错误(Moving slot 5461 from 127.0.0.1:7004 to 127.0.0.1:7000:
 [ERR] Calling MIGRATE: ERR Syntax error, try CLIENT (LIST | KILL | GETNAME | SETNAME | PAUSE | REPLY))。
-  * 解决办法:1.卸载最新redis库，gem uninstall redis;2.安装3.x版本，gem install redis -v 3.3.5 测试3.2.1到3.3.5都可以，4.x以上的分片报错
+  * 解决办法:
+    - 1.卸载最新redis库，gem uninstall redis;
+    - 2.安装3.x版本，gem install redis -v 3.3.5 测试3.2.1到3.3.5都可以，4.x以上的分片报错
 
-#### 扩容
-  
-#### 缩减实例
+#### 手动主从切换
+
+  * 当节点需要升级版本时，需要停止服务，可以手动切换从节点为主，主节点为从，操作步骤为，使用cli连接到从节点执行CLUSTER FAILOVER
+
+#### 加节点
+
+  * 新加redis节点，并启动做主节点，例如6999
+  * 执行如下命令将新节点添加到集群
+  ```bash
+    $ ~/tools/redis-4.0.2/src/redis-trib.rb add-node 127.0.0.1:6999 127.0.0.1:7000
+  ```
+  * 因为新加节点没有hash槽，所有需要做集群重新分片操作，可以迁移其它三个节点4000个槽过来
+  * 添加redis节点7006并启动做从节点
+  * 执行如下命令将节点添加到集群做从节点
+  ```bash
+    $ ~/tools/redis-4.0.2/src//redis-trib.rb add-node --slave 127.0.0.1:7006 127.0.0.1:7000
+  ```
+  * cli连接新增从节点执行如下命令完成slaveof
+  ```bash
+  #获取集群节点信息
+  127.0.0.1:7006> CLUSTER NODES
+  1de4e5f74273a60a8c166bcfd50bc6f9ca64e350 127.0.0.1:7001@17001 master - 0 1553697824516 14 connected 6833-10922
+  5b3d7da46fa481dce1fec0f53c6785ee6173abc4 127.0.0.1:7005@17005 slave 0984c6d4a3cbee1e5bf4b1be7d9b4362761aabe3 0 1553697823000 3 connected
+  1c964df5f8ca6e327c1c5e016e33d5867d18fcf6 127.0.0.1:6999@16999 master - 0 1553697824516 16 connected 0-1723 5512-6832 12472-13426
+  aca0f8429f137ef379ff152bb9cf220c13cd1527 127.0.0.1:7000@17000 master - 0 1553697823498 15 connected 1724-5511 10923-12471
+  0984c6d4a3cbee1e5bf4b1be7d9b4362761aabe3 127.0.0.1:7002@17002 master - 0 1553697824516 3 connected 13427-16383
+  6ea768504399d07498a5fb22d474620a02a4ebf3 127.0.0.1:7003@17003 slave aca0f8429f137ef379ff152bb9cf220c13cd1527 0 1553697824516 15 connected
+  b0029d40da2ba2b14642c2d637d34cc74114e4a2 127.0.0.1:7006@17006 myself,slave 1c964df5f8ca6e327c1c5e016e33d5867d18fcf6 0 1553697824000 0 connected
+  a49cc2414eb23edc53791ba0ececf76da1060a08 127.0.0.1:7004@17004 slave 1de4e5f74273a60a8c166bcfd50bc6f9ca64e350 0 1553697823000 14 connected
+  #slaveof 6999节点
+  127.0.0.1:7006> CLUSTER REPLICATE 1c964df5f8ca6e327c1c5e016e33d5867d18fcf6
+  ```
+
+#### 减节点
+
+  - 将需要移除的主节点hash槽转移到其它节点,做集群重新分片
+  - 移除主从节点
+  ```bash
+  #移除主
+  $ ~/tools/redis-4.0.2/src/redis-trib.rb del-node 127.0.0.1:7000 1c964df5f8ca6e327c1c5e016e33d5867d18fcf6
+  #移除从
+  $ ~/tools/redis-4.0.2/src/redis-trib.rb del-node 127.0.0.1:7000 b0029d40da2ba2b14642c2d637d34cc74114e4a2
+  ```
